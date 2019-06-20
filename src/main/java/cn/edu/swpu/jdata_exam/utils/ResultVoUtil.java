@@ -2,6 +2,7 @@ package cn.edu.swpu.jdata_exam.utils;
 
 import cn.edu.swpu.jdata_exam.enums.CodeEnum;
 import cn.edu.swpu.jdata_exam.vo.ResultVo;
+import org.springframework.http.HttpMethod;
 
 public class ResultVoUtil {
     //成功返回，携带内容

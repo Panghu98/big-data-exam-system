@@ -92,6 +92,7 @@ public class FileServiceImpl implements FileService {
             LocalExecute.removeFile(filePath);
 
         }catch (Exception e){
+//            e.printStackTrace();
 
             log.error("ssh上传文件失败,或删除文件失败");
 
