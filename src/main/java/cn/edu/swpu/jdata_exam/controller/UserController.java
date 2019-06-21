@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 @Slf4j
 @RequestMapping("/user")
 @RestController
-@CrossOrigin(allowedHeaders = "*")
+@CrossOrigin
 public class UserController {
 
     @Autowired
@@ -36,17 +36,9 @@ public class UserController {
      * @param response
      * @return
      */
-    @PostMapping("/login")
+    @PostMapping(value = "/login",produces = { "application/json;charset=UTF-8" })
     public ResultVo login(@RequestBody UserLogin userLogin, HttpServletRequest request, HttpServletResponse response){
-
-        response.setHeader("Access-Control-Allow-Origin", request.getHeader("Origin"));
-        response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
-        response.addHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept,Authorization");
-        response.addHeader("Access-Control-Expose-Headers", "Origin, X-Requested-With, Content-Type, Accept,Authorization");
-
-
         log.info("进入/login服务");
-        log.error(userLogin.toString());
         return userBasicInfoService.userLogin(userLogin,request,response);
     }
 
@@ -56,14 +48,12 @@ public class UserController {
      * @param userUpdatePw
      * @return
      */
-    @RequestMapping("/updatePw")
+    @RequestMapping(value = "/updatePw",produces = { "application/json;charset=UTF-8" })
     public ResultVo updatePw(@RequestBody UserUpdatePw userUpdatePw, HttpServletRequest request){
 
         log.info("进入/updatePw");
 
-        ResultVo resultVo = userBasicInfoService.updateUserPw(userUpdatePw,request);
-
-        return resultVo;
+        return userBasicInfoService.updateUserPw(userUpdatePw,request);
 
 
 
@@ -75,13 +65,11 @@ public class UserController {
      * @param
      * @return
      */
-    @RequestMapping("/select/score")
+    @RequestMapping(value = "/select/score",produces = { "application/json;charset=UTF-8" })
     public ResultVo selectScore(){
         log.info("进入/select/score服务");
 
-        ResultVo resultVo = userScoreService.getScoreById();
-
-        return resultVo;
+        return userScoreService.getScoreById();
 
     }
 
@@ -91,37 +79,18 @@ public class UserController {
      * @param request
      * @param response
      */
-    @GetMapping("/getCode")
+    @GetMapping(value = "/getCode",produces = { "application/json;charset=UTF-8" })
     public ResultVo getVerifyCode(HttpServletRequest request, HttpServletResponse response){
-
-        response.setHeader("Access-Control-Allow-Origin", request.getHeader("Origin"));
-        response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
-        response.addHeader("Access-Control-Allow-Credentials", "true");
-        response.addHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept,Authorization");
-        response.addHeader("Access-Control-Expose-Headers", "Origin, X-Requested-With, Content-Type, Accept,Authorization");
-
         return verifyCodeService.createVerifyCode(request,response);
 
     }
 
-    @PostMapping("/register")
-    public ResultVo register(RegisterUser registerUser, HttpServletResponse response, HttpServletRequest request){
+    @PostMapping(value = "/register",produces = { "application/json;charset=UTF-8" })
+    public ResultVo register(RegisterUser registerUser){
         log.error("进入注册");
-        response.setHeader("Access-Control-Allow-Origin", request.getHeader("Origin"));
-        response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
-        response.addHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept,Authorization");
-        response.addHeader("Access-Control-Expose-Headers", "Origin, X-Requested-With, Content-Type, Accept,Authorization");
         return userBasicInfoService.register(registerUser);
 
     }
-
-
-
-
-
-
-
-
 
 
 }

@@ -43,9 +43,31 @@ public class JWTAuthenticationFilter extends BasicAuthenticationFilter {
                                     HttpServletResponse response,
                                     FilterChain chain) throws IOException, ServletException {
 
+
+        /*
+         * 跨域问题的设置
+         */
+        String option = "OPTIONS";
+        if (option.equals(request.getMethod())) {
+            log.info("浏览器的预请求的处理..");
+            String origin =  request.getHeader("Origin");
+            response.setContentType("application/json; charset=utf-8");
+            response.setCharacterEncoding("UTF-8");
+            response.setHeader("Access-Control-Max-Age", "3600");
+            response.setHeader("Access-Control-Allow-Methods", "POST, GET,PUT, OPTIONS, DELETE,HEAD");
+            response.setHeader("Access-Control-Allow-Origin",origin);
+            response.setHeader("Access-Control-Allow-Credentials", "true");
+            response.setHeader("Access-Control-Allow-Headers", "X-Requested-With, Content-Type, Accept, token,Origin, No-Cache, X-Requested-With, If-Modified-Since,authorization,Pragma, Last-Modified, Cache-Control, Expires, Authorization,Token");
+            return;
+        } else {
+            String requestURI = request.getRequestURI();
+            log.error("requestURI:{}", requestURI);
+        }
+
         log.info("进入JWTAuthenticationFilter的doFilterInternal方法。校验token");
 
-        String token = request.getHeader(tokenHeader);   //取得token内容
+        //取得token内容
+        String token = request.getHeader(tokenHeader);
 
         log.info("从头部获取的token={}",token);
 
@@ -56,6 +78,7 @@ public class JWTAuthenticationFilter extends BasicAuthenticationFilter {
 
         UsernamePasswordAuthenticationToken authenticationToken = getAuthentication(token);
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+        //使用两次会返回来两个结果
         chain.doFilter(request,response);
 
 

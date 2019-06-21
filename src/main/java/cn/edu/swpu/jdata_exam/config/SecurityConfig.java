@@ -56,9 +56,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         log.info("进入SecurityConfig的configure(HttpSecurity http)");
         http.csrf().disable()           //关闭csrf
                 .authorizeRequests()      //授权配置
-                .antMatchers(HttpMethod.GET,"swagger-ui.html","/test/**","/user/login","/user/getCode","/swagger**","/v2/**").permitAll()
+                .antMatchers(HttpMethod.GET,"/info/**","swagger-ui.html","/test/**","/user/login","/user/getCode","/swagger**","/v2/**").permitAll()
                 .antMatchers(HttpMethod.POST,"/user/register","/user/login").permitAll()
-                .antMatchers(HttpMethod.OPTIONS,"/user/getCode","/user/updatePw","/v2/**","/swagger**","/user/select/score","/file/upload","/file/submit","/user/login","/user/register").permitAll()
+                .antMatchers(HttpMethod.OPTIONS,"/user/login").permitAll()
                 .antMatchers("swagger-ui.html","/test/**","/user/select/score").hasRole("ADMIN")
                 .anyRequest()          //任何请求
                 .authenticated()      //身份认证
@@ -67,23 +67,25 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .addFilter(new JWTAuthenticationFilter(authenticationManager()));
     }
 
-    @Bean
-    CorsConfigurationSource corsConfigurationSource(){
-        CorsConfiguration corsConfiguration = new CorsConfiguration();
-
-        //允许的请求域名
-        corsConfiguration.setAllowedOrigins(Arrays.asList("*"));
-        //允许的请求方式
-        corsConfiguration.setAllowedMethods(Arrays.asList("GET","POST","OPTION"));
-
-
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-
-        source.registerCorsConfiguration("/**",corsConfiguration);
-
-        return source;
-
-    }
+//    @Bean
+//    CorsConfigurationSource corsConfigurationSource(){
+//        CorsConfiguration corsConfiguration = new CorsConfiguration();
+//
+//        //允许的请求域名
+//        corsConfiguration.setAllowedOrigins(Arrays.asList("http://localhost:5488"));
+//        //允许的请求方式
+//        corsConfiguration.setAllowedMethods(Arrays.asList("GET","POST","OPTION"));
+//
+//        corsConfiguration.setAllowCredentials(true);
+//
+//
+//        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+//
+//        source.registerCorsConfiguration("/**",corsConfiguration);
+//
+//        return source;
+//
+//    }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -98,7 +100,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(WebSecurity web) throws Exception {
         super.configure(web);
 
-        web.ignoring().antMatchers("/root/home/panghu/Project/exam");
+        web.ignoring().antMatchers("/root/home/panghu/Project/exam/");
     }
 
 
