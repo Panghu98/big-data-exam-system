@@ -11,7 +11,7 @@ import java.util.Date;
 public class SshUtil {
     public static String ip = "47.107.61.232";
 
-    public static String uploadPath = "/root/home/panghu/Project/exam/";
+    public static String uploadPath = "/root/home/panghu/Project/exam/data/";
 
     public static String username = "root";
 

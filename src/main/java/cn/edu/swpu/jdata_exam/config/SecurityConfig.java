@@ -100,7 +100,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(WebSecurity web) throws Exception {
         super.configure(web);
 
-        web.ignoring().antMatchers("/root/home/panghu/Project/exam/");
+        web.ignoring().antMatchers("/root/home/panghu/Project/exam/data/");
     }
 
 
