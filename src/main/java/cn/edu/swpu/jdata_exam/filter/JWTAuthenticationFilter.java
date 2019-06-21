@@ -50,12 +50,11 @@ public class JWTAuthenticationFilter extends BasicAuthenticationFilter {
         String option = "OPTIONS";
         if (option.equals(request.getMethod())) {
             log.info("浏览器的预请求的处理..");
-            String origin =  request.getHeader("Origin");
             response.setContentType("application/json; charset=utf-8");
             response.setCharacterEncoding("UTF-8");
             response.setHeader("Access-Control-Max-Age", "3600");
             response.setHeader("Access-Control-Allow-Methods", "POST, GET,PUT, OPTIONS, DELETE,HEAD");
-            response.setHeader("Access-Control-Allow-Origin",origin);
+            response.setHeader("Access-Control-Allow-Origin","http://47.107.61.232:8666");
             response.setHeader("Access-Control-Allow-Credentials", "true");
             response.setHeader("Access-Control-Allow-Headers", "X-Requested-With, Content-Type, Accept, token,Origin, No-Cache, X-Requested-With, If-Modified-Since,authorization,Pragma, Last-Modified, Cache-Control, Expires, Authorization,Token");
             return;
