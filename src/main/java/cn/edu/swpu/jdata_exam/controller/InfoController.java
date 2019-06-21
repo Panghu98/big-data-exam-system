@@ -23,7 +23,7 @@ import java.util.List;
  */
 @Slf4j
 @RestController
-@CrossOrigin(allowedHeaders = "*",origins = "*")
+@CrossOrigin(allowedHeaders = "*",origins = "http://47.107.61.232:8666")
 public class InfoController {
 
     @Autowired

@@ -20,7 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 @Slf4j
 @RequestMapping("/user")
 @RestController
-@CrossOrigin
+@CrossOrigin(allowedHeaders = "*",origins = "http://47.107.61.232:8666")
 public class UserController {
 
     @Autowired
