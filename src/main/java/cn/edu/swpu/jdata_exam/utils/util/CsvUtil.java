@@ -22,7 +22,9 @@ public class CsvUtil {
     /**
      * 本机位置
      **/
-    public static String UPLOADED_LOCAL_FOLDER = "/root/home/panghu/Project/exam/data/backup/";
+    public static String UPLOADED_LOCAL_FOLDER = "/root/home/panghu/Project/exam/file/";
+
+
 
     private static Integer number = 85443;//数据条数限制
 //    private static Integer number = 4;//测试

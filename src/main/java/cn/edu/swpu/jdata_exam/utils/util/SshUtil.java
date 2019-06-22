@@ -16,6 +16,7 @@ public class SshUtil {
     public static String username = "root";
 
     public static String password  = "Abc123456";
+    //实质上是file
     public static boolean putFile(String localFilePath) throws IOException {
         Connection conn = new Connection(ip);//目标服务器地址
         conn.connect();

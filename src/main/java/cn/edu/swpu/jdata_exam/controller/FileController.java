@@ -28,6 +28,7 @@ public class FileController {
      * 服务器位置
      **/
 
+    //上传结果
     @RequestMapping("/upload")
     public Callable<ResultVo> singleFileUpload(
             HttpServletRequest request,
@@ -54,6 +55,7 @@ public class FileController {
     }
 
 
+    //上传代码
     @RequestMapping(value ="/submit",produces = { "application/json;charset=UTF-8" })
     public ResultVo submitFile(HttpServletRequest request,
                                @RequestParam("file") MultipartFile file){
