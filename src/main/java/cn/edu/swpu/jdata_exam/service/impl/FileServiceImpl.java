@@ -73,32 +73,33 @@ public class FileServiceImpl implements FileService {
         if(!CsvUtil.read(filePath,file.getOriginalFilename())){
 
             log.info("csv验证不通过。格式内容错误");
-
             throw new JdataExamException(ExceptionEnum.FILE_FORMAT_ERROR);
         }
 
         log.info("本地上传成功");
 
-        try{
-
-            if (!SshUtil.putFile(filePath)){
-
-                log.info("转发服务器出错");
-
-                throw new JdataExamException(ExceptionEnum.FILE_UPLOAD_FAILED);
-
-            }
-            log.info("ssh上传文件成功,删除本地临时文件...");
-
-            LocalExecute.removeFile(filePath);
-
-        }catch (Exception e){
-//            e.printStackTrace();
-
-            log.error("ssh上传文件失败,或删除文件失败");
-
-            throw new JdataExamException(ExceptionEnum.SSH_UPLOAD_FAILED);
-        }
+        //不使用SSH进行上传
+//
+//        try{
+//
+//            if (!SshUtil.putFile(filePath)){
+//
+//                log.info("转发服务器出错");
+//
+//                throw new JdataExamException(ExceptionEnum.FILE_UPLOAD_FAILED);
+//
+//            }
+//            log.info("ssh上传文件成功,删除本地临时文件...");
+//
+//            LocalExecute.removeFile(filePath);
+//
+//        }catch (Exception e){
+////            e.printStackTrace();
+//
+//            log.error("ssh上传文件失败,或删除文件失败");
+//
+//            throw new JdataExamException(ExceptionEnum.SSH_UPLOAD_FAILED);
+//        }
 
 
 
@@ -131,24 +132,24 @@ public class FileServiceImpl implements FileService {
 
         }
         System.out.println("上传本地成功！");
-
-        try {
-
-            if (!SshUtil.putFile(filePath)){
-
-                throw new JdataExamException(ExceptionEnum.FILE_UPLOAD_FAILED);
-
-            }
-            log.info("ssh上传文件成功,删除本地临时文件...");
-
-            LocalExecute.removeFile(filePath);
-
-        }catch (Exception e){
-
-            log.error("ssh上传文件失败,或删除文件失败");
-
-            throw new JdataExamException(ExceptionEnum.SSH_UPLOAD_FAILED);
-        }
+//
+//        try {
+//
+//            if (!SshUtil.putFile(filePath)){
+//
+//                throw new JdataExamException(ExceptionEnum.FILE_UPLOAD_FAILED);
+//
+//            }
+//            log.info("ssh上传文件成功,删除本地临时文件...");
+//
+//            LocalExecute.removeFile(filePath);
+//
+//        }catch (Exception e){
+//
+//            log.error("ssh上传文件失败,或删除文件失败");
+//
+//            throw new JdataExamException(ExceptionEnum.SSH_UPLOAD_FAILED);
+//        }
 
 
         return ResultVoUtil.success(BackMessageEnum.FILE_UPLOAD_SUCCESS);

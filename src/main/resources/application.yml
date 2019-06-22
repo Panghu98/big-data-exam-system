@@ -25,6 +25,7 @@ mybatis:
   mapper-locations: classpath:mapper/*.xml
 server:
   port: 5488
+  connection-timeout: 120
 
 
 
