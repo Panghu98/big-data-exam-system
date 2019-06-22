@@ -2,6 +2,7 @@ package cn.edu.swpu.jdata_exam.service.impl;
 
 import cn.edu.swpu.jdata_exam.dao.UserScoreDAO;
 import cn.edu.swpu.jdata_exam.entity.UserScore;
+import cn.edu.swpu.jdata_exam.entity.UserScore2;
 import cn.edu.swpu.jdata_exam.entity.dto.ResponseUserScore;
 import cn.edu.swpu.jdata_exam.service.UserScoreService;
 import cn.edu.swpu.jdata_exam.utils.AuthenticationUtil;
@@ -42,38 +43,7 @@ public class UserScoreServiceImpl implements UserScoreService {
         log.info("进入UserScoreServiceImpl的getScoreById");
 
         String userId = AuthenticationUtil.getAuthUserId();
-
-        ValueOperations<String, UserScore> operations = redisTemplate.opsForValue();
-        UserScore userScore = null;
-        ResponseUserScore responseUserScore = new ResponseUserScore();
-
-        String key = userId + "_score";
-
-        //判断缓存中是否存在该id的信息
-        if (redisTemplate.hasKey(key)) {
-            userScore = operations.get(key);
-            log.info("从缓存中取值");
-            BeanUtils.copyProperties(userScore, responseUserScore);
-
-        } else {
-            //根据userId查出成绩信息
-            List<UserScore> userScoreList = userScoreDAO.getScoreById(userId);
-            if (userScoreList.isEmpty()) {
-
-                responseUserScore.setUserId(userId);
-                responseUserScore.setUserScore(0);
-            } else {
-
-                userScore = (UserScore) userScoreList.toArray()[0];
-                BeanUtils.copyProperties(userScore, responseUserScore);
-                log.info("userId={}的最好成绩是{}", userId, userScore);
-                //存入缓存
-                operations.set(userId + "_score", userScore, expirationTime, TimeUnit.SECONDS);
-                log.info("userId={}已存入缓存", userId);
-            }
-        }
-
-        return ResultVoUtil.success(responseUserScore);
+        return ResultVoUtil.success(userScoreDAO.getScoreById(userId));
     }
 
     @Override

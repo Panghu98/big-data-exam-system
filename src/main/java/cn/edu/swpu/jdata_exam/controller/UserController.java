@@ -18,9 +18,9 @@ import javax.servlet.http.HttpServletResponse;
  * @author panghu
  */
 @Slf4j
-@RequestMapping("/user")
+@RequestMapping(value = "/user",produces = { "application/json;charset=UTF-8" })
 @RestController
-@CrossOrigin(allowedHeaders = "*",origins = "http://47.107.61.232:8666")
+@CrossOrigin(origins = "http://localhost:5488")
 public class UserController {
 
     @Autowired
@@ -39,7 +39,7 @@ public class UserController {
      * @param response
      * @return
      */
-    @PostMapping(value = "/login",produces = { "application/json;charset=UTF-8" })
+    @PostMapping(value = "/login")
     public ResultVo login(@RequestBody UserLogin userLogin, HttpServletRequest request, HttpServletResponse response){
         log.info("进入/login服务");
         return userBasicInfoService.userLogin(userLogin,request,response);
@@ -51,7 +51,7 @@ public class UserController {
      * @param userUpdatePw
      * @return
      */
-    @RequestMapping(value = "/updatePw",produces = { "application/json;charset=UTF-8" })
+    @RequestMapping(value = "/updatePw")
     public ResultVo updatePw(@RequestBody UserUpdatePw userUpdatePw, HttpServletRequest request){
 
         log.info("进入/updatePw");
@@ -63,32 +63,19 @@ public class UserController {
     }
 
 
-    /**
-     * 用户查询个人最好成绩
-     * @param
-     * @return
-     */
-    @RequestMapping(value = "/select/score",produces = { "application/json;charset=UTF-8" })
-    public ResultVo selectScore(){
-        log.info("进入/select/score服务");
-
-        return userScoreService.getScoreById();
-
-    }
-
 
     /**
      * 获取验证码接口
      * @param request
      * @param response
      */
-    @GetMapping(value = "/getCode",produces = { "application/json;charset=UTF-8" })
+    @GetMapping(value = "/getCode")
     public ResultVo getVerifyCode(HttpServletRequest request, HttpServletResponse response){
         return verifyCodeService.createVerifyCode(request,response);
 
     }
 
-    @PostMapping(value = "/register",produces = { "application/json;charset=UTF-8" })
+    @PostMapping(value = "/register")
     public ResultVo register(RegisterUser registerUser){
         log.error("进入注册");
         return userBasicInfoService.register(registerUser);

@@ -17,7 +17,7 @@ import java.util.List;
 public interface UserScoreDAO {
 
     //根据id查询成绩信息
-    List<UserScore> getScoreById(String userId);
+    UserScore2 getScoreById(String userId);
 
     //添加成绩
     int addScore(UserScore userScore);
@@ -31,5 +31,6 @@ public interface UserScoreDAO {
 
 
     List<Long> getUserList();
+
 
 }

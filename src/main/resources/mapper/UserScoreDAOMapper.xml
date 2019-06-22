@@ -5,18 +5,14 @@
 <mapper namespace="cn.edu.swpu.jdata_exam.dao.UserScoreDAO">
 
     <!--UserScore getScoreById(String userId);-->
-    <select id="getScoreById" resultType="cn.edu.swpu.jdata_exam.entity.UserScore">
+    <select id="getScoreById" resultType="cn.edu.swpu.jdata_exam.entity.UserScore2">
         SELECT
-        id,
-        user_id userId,
-        accuracy accuracy,
-        date_time dateTime
+        a.user_id userId,max(accuracy) as  accuracy ,a.date_time as `datetime`,b.username as username
         FROM
-        jdata_user_score
+        jdata_user_score a inner join jdata_user_basic_info b on a.user_id = b.user_id
         WHERE
-        user_id=#{userId}
-        ORDER BY
-        user_score DESC
+        a.user_id=#{userId}
+        group BY a.date_time DESC
     </select>
 
     <!--int addScore(UserScore userScore);-->
@@ -34,7 +30,8 @@
         from jdata_user_score order by userId desc ;
     </select>
     <select id="getRankingList" resultType="cn.edu.swpu.jdata_exam.entity.UserScore2">
-        select a.user_id as userId,max(accuracy) as accuracy,b.username as username from jdata_user_score a
+        select a.user_id  as userId,max(accuracy) as accuracy,b.username as username
+        from jdata_user_score a
         inner join jdata_user_basic_info b on a.user_id = b.user_id  where a.user_id in
         <foreach collection="list" separator="," open="(" close=")" index="" item="type">
             #{type, jdbcType=VARCHAR}
@@ -44,6 +41,12 @@
     </select>
     <select id="getUserList" resultType="java.lang.Long">
         select distinct user_id from jdata_user_score ;
+    </select>
+    <select id="getBestScore" resultType="cn.edu.swpu.jdata_exam.entity.UserScore2">
+        select a.user_id  as userId,max(accuracy) as accuracy,b.username as username
+        from jdata_user_score a
+        inner join jdata_user_basic_info b on a.user_id = b.user_id
+        where a.user_id = #{userId};
     </select>
 
 

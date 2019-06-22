@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Enumeration;
 
 /**
  * token的校验
@@ -50,13 +51,14 @@ public class JWTAuthenticationFilter extends BasicAuthenticationFilter {
         String option = "OPTIONS";
         if (option.equals(request.getMethod())) {
             log.info("浏览器的预请求的处理..");
+            response.setHeader("Access-Control-Allow-Origin",request.getHeader("origin"));
             response.setContentType("application/json; charset=utf-8");
             response.setCharacterEncoding("UTF-8");
             response.setHeader("Access-Control-Max-Age", "3600");
             response.setHeader("Access-Control-Allow-Methods", "POST, GET,PUT, OPTIONS, DELETE,HEAD");
-            response.setHeader("Access-Control-Allow-Origin","http://47.107.61.232:8666");
             response.setHeader("Access-Control-Allow-Credentials", "true");
-            response.setHeader("Access-Control-Allow-Headers", "X-Requested-With, Content-Type, Accept, token,Origin, No-Cache, X-Requested-With, If-Modified-Since,authorization,Pragma, Last-Modified, Cache-Control, Expires, Authorization,Token");
+            response.setHeader("Access-Control-Allow-Headers", "X-Requested-With, Content-Type, Accept, token,Origin, No-Cache, X-Requested-With,verify-code, If-Modified-Since,authorization,Pragma, Last-Modified, Cache-Control, Expires, Authorization,Token");
+            log.info("成功处理");
             return;
         } else {
             String requestURI = request.getRequestURI();

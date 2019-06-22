@@ -1,19 +1,14 @@
 package cn.edu.swpu.jdata_exam.controller;
 
-import cn.edu.swpu.jdata_exam.dao.UserScoreDAO;
-import cn.edu.swpu.jdata_exam.entity.UserScore2;
 import cn.edu.swpu.jdata_exam.service.FileService;
-import cn.edu.swpu.jdata_exam.utils.ResultVoUtil;
+import cn.edu.swpu.jdata_exam.service.UserScoreService;
 import cn.edu.swpu.jdata_exam.vo.ResultVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.List;
 
 /**
  * @author panghu
@@ -22,31 +17,42 @@ import java.util.List;
  * @date 19-6-17 上午9:53
  */
 @Slf4j
+@RequestMapping(value = "/info",produces = { "application/json;charset=UTF-8" })
 @RestController
-@CrossOrigin(allowedHeaders = "*",origins = "http://47.107.61.232:8666")
+@CrossOrigin(origins = "http://localhost:5488")
 public class InfoController {
 
     @Autowired
-    private FileService fileService;
+    private UserScoreService userScoreService;
 
     @Autowired
-    private UserScoreDAO userScoreDAO;
+    private FileService fileService;
 
     @GetMapping("/info")
     public String test(){
         return "for test";
     }
 
-    @GetMapping(value = "/info/getExcel",produces = { "application/json;charset=UTF-8" })
+    @GetMapping(value = "/getExcel")
     public void getExcel(HttpServletResponse response) throws IOException {
         fileService.getExcel(response);
     }
 
-    @GetMapping(value = "/info/getRankingList",produces = { "application/json;charset=UTF-8" })
+    @GetMapping(value = "/getRankingList")
     public ResultVo getRankingList(){
-        List<UserScore2> list = userScoreDAO.getRankingList(userScoreDAO.getUserList());
-        return ResultVoUtil.success(list);
+        return userScoreService.getRankingList();
     }
 
+    /**
+     * 用户查询个人最好成绩
+     * @param
+     * @return
+     */
+    @GetMapping(value = "/score")
+    public ResultVo selectScore(){
+        log.info("进入/info/score服务");
+        return userScoreService.getScoreById();
+
+    }
 
 }
