@@ -276,16 +276,17 @@ public class FileServiceImpl implements FileService {
         Calendar calendar = Calendar.getInstance();
         int day = calendar.get(Calendar.DAY_OF_MONTH);
         int hours = calendar.get(Calendar.HOUR_OF_DAY);
-        if (day == 23){
-            if (hours >= 18){
+        int month = calendar.get(Calendar.DAY_OF_MONTH);
+        //如果为6月
+        if (month == 6){
+            if (day == 26 && hours >= 10){
                 return true;
             }else {
-                return false;
+                return day > 26;
             }
-        }else if (day == 24){
-            return true;
-        }else {
-            return false;
+        }else if (month == 7){
+            return day == 1 && hours <= 12;
         }
+        return false;
     }
 }

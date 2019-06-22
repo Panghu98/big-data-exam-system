@@ -4,7 +4,6 @@ import cn.edu.swpu.jdata_exam.entity.RegisterUser;
 import cn.edu.swpu.jdata_exam.entity.dto.UserLogin;
 import cn.edu.swpu.jdata_exam.entity.dto.UserUpdatePw;
 import cn.edu.swpu.jdata_exam.service.UserBasicInfoService;
-import cn.edu.swpu.jdata_exam.service.UserScoreService;
 import cn.edu.swpu.jdata_exam.service.VerifyCodeService;
 import cn.edu.swpu.jdata_exam.vo.ResultVo;
 import lombok.extern.slf4j.Slf4j;
