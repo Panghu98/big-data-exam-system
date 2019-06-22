@@ -115,7 +115,7 @@ public class FileServiceImpl implements FileService {
             throw new JdataExamException(ExceptionEnum.SUBMIT_NOT_OPEN);
         }
 
-        String filePath = CsvUtil.UPLOADED_LOCAL_FOLDER + file.getOriginalFilename();
+        String filePath = CsvUtil.UPLOADED_LOCAL_FOLDER2 + file.getOriginalFilename();
         try {
             byte[] bytes = file.getBytes();
             Path path = Paths.get(filePath);
