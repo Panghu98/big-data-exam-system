@@ -27,9 +27,6 @@ public class UserController {
     private UserBasicInfoService userBasicInfoService;
 
     @Autowired
-    private UserScoreService userScoreService;
-
-    @Autowired
     private VerifyCodeService verifyCodeService;
 
     /**
