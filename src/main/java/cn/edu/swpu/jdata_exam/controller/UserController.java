@@ -20,7 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 @Slf4j
 @RequestMapping(value = "/user",produces = { "application/json;charset=UTF-8" })
 @RestController
-@CrossOrigin(origins = "http://localhost:5488")
+@CrossOrigin(origins = "http://47.107.61.232:5488")
 public class UserController {
 
     @Autowired

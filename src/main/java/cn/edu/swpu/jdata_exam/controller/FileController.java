@@ -17,7 +17,7 @@ import java.util.concurrent.Callable;
 @Slf4j
 @RestController
 @RequestMapping("/file")
-@CrossOrigin(origins = "http://localhost:5488")
+@CrossOrigin(origins = "http://47.107.61.232:5488")
 public class FileController {
 
     @Autowired

@@ -38,7 +38,7 @@ public class JWTLoginFilter extends UsernamePasswordAuthenticationFilter {
     private String tokenHeader = "Authorization";
 
     //token的有效期  30分钟   毫秒单位
-    private long expiration = 30*60*1000;
+    private long expiration = 360*60*1000;
 
 
     //接收并解析用户凭证,从request中取出authentication
@@ -55,20 +55,6 @@ public class JWTLoginFilter extends UsernamePasswordAuthenticationFilter {
         }else{
             authenticationToken = new UsernamePasswordAuthenticationToken(userLogin.getUserId(),userLogin.getUserPassword());
         }
-
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//            authenticationToken = new UsernamePasswordAuthenticationToken("", "");
-//        }
-
-
-//        log.info("userId={},userPassword={}",userId,password);
-//
-//        if(StringUtils.isEmpty(userId)&&StringUtils.isEmpty(password)) {
-//            authenticationToken = new UsernamePasswordAuthenticationToken("", "");
-//        }else{
-//            authenticationToken = new UsernamePasswordAuthenticationToken(userId,password);
-//        }
 
         return authenticationToken;
     }
