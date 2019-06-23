@@ -23,9 +23,6 @@ import java.util.concurrent.TimeUnit;
 public class UserScoreServiceImpl implements UserScoreService {
 
     @Autowired
-    private RedisTemplate redisTemplate;
-
-    @Autowired
     private UserScoreDAO userScoreDAO;
 
     //成绩缓存时间 30分钟

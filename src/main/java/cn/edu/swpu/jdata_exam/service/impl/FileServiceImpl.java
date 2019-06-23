@@ -6,11 +6,10 @@ import cn.edu.swpu.jdata_exam.enums.BackMessageEnum;
 import cn.edu.swpu.jdata_exam.enums.ExceptionEnum;
 import cn.edu.swpu.jdata_exam.exception.JdataExamException;
 import cn.edu.swpu.jdata_exam.service.FileService;
+import cn.edu.swpu.jdata_exam.utils.AuthenticationUtil;
 import cn.edu.swpu.jdata_exam.utils.NameChangeUtil;
 import cn.edu.swpu.jdata_exam.utils.ResultVoUtil;
 import cn.edu.swpu.jdata_exam.utils.util.CsvUtil;
-import cn.edu.swpu.jdata_exam.utils.util.LocalExecute;
-import cn.edu.swpu.jdata_exam.utils.util.SshUtil;
 import cn.edu.swpu.jdata_exam.vo.ResultVo;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.hssf.usermodel.*;
@@ -19,6 +18,7 @@ import org.apache.poi.ss.usermodel.FillPatternType;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -33,27 +33,47 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @Slf4j
 @Service
 public class FileServiceImpl implements FileService {
 
+    public final static String prefixKey = "username : ";
+
+    private RedisTemplate<String, String> redisTemplate;
+
     private UserScoreDAO userScoreDAO;
 
     @Autowired
-    public FileServiceImpl(UserScoreDAO userScoreDAO) {
+    public FileServiceImpl(UserScoreDAO userScoreDAO, RedisTemplate<String, String> redisTemplate) {
         this.userScoreDAO = userScoreDAO;
+        this.redisTemplate = redisTemplate;
     }
 
     //上传CSV  结果
     @Override
     public ResultVo uploadFile(HttpServletRequest request, MultipartFile file) {
 
+        String userId = AuthenticationUtil.getAuthUserId()+prefixKey;
+
+
+        //如果存在则不进行上传
+        if (searchInCache(userId)){
+            return ResultVoUtil.error(ExceptionEnum.FILE_HAS_UPLOADED.getCode(),
+                            ExceptionEnum.FILE_HAS_UPLOADED.getMessage());
+        }
+        //将用户的学放入缓存当中，缓存you效则不能上传
+        saveInCache(userId);
+
         /**判断是否为空**/
         if (file.isEmpty()) {
             throw new JdataExamException(ExceptionEnum.FILE_EMPTY);
         }
         String filePath = CsvUtil.UPLOADED_LOCAL_FOLDER + file.getOriginalFilename();
+
+
+
         try {
             byte[] bytes = file.getBytes();
             Path path = Paths.get(filePath);
@@ -71,13 +91,19 @@ public class FileServiceImpl implements FileService {
 
         }
 
+
         if(!CsvUtil.read(filePath,file.getOriginalFilename())){
 
             log.info("csv验证不通过。格式内容错误");
             throw new JdataExamException(ExceptionEnum.FILE_FORMAT_ERROR);
         }
 
+
         log.info("本地上传成功");
+
+
+
+
 
         //不使用SSH进行上传
 //
@@ -101,7 +127,6 @@ public class FileServiceImpl implements FileService {
 //
 //            throw new JdataExamException(ExceptionEnum.SSH_UPLOAD_FAILED);
 //        }
-
 
 
         return ResultVoUtil.success(BackMessageEnum.FILE_UPLOAD_SUCCESS);
@@ -133,6 +158,7 @@ public class FileServiceImpl implements FileService {
 
         }
         System.out.println("上传本地成功！");
+
 //
 //        try {
 //
@@ -279,7 +305,7 @@ public class FileServiceImpl implements FileService {
         Calendar calendar = Calendar.getInstance();
         int day = calendar.get(Calendar.DAY_OF_MONTH);
         int hours = calendar.get(Calendar.HOUR_OF_DAY);
-        int month = calendar.get(Calendar.DAY_OF_MONTH);
+        int month = calendar.get(Calendar.MONTH)+1;
         //如果为6月
         if (month == 6){
             if (day == 26 && hours >= 10){
@@ -292,4 +318,33 @@ public class FileServiceImpl implements FileService {
         }
         return false;
     }
+
+    private boolean searchInCache(String userId){
+        return redisTemplate.hasKey(userId);
+    }
+
+    //判断用户是否在同一天进行操作
+    private void saveInCache(String userId){
+        redisTemplate.opsForValue().set(userId,"用户文件上传时间未过期",
+                                        getTimeExpire(), TimeUnit.MILLISECONDS);
+    }
+
+
+    //获取缓存的毫秒数
+    private static Long getTimeExpire(){
+        Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH);
+        //获取的月数比实际的少一个月
+        //System.currentTimeMillis()这个同样少一个月
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        calendar.set(year,month,day,0,0,0);
+        long startOfToday = calendar.getTimeInMillis()+24*60*60*1000;
+        return (startOfToday-System.currentTimeMillis());
+    }
+
+
 }
+
+
+
