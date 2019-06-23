@@ -26,9 +26,12 @@
     </insert>
 
     <select id="selectByTime" parameterType="date" resultType="cn.edu.swpu.jdata_exam.entity.UserScore">
-        select distinct `user_id` as userId,accuracy as accuracy,frequency frequency,date_time as dateTime
-        from jdata_user_score order by userId desc ;
+        select distinct a.`user_id` as userId,a.accuracy as accuracy,b.user_class as className,a.date_time as dateTime
+        from jdata_user_score a inner join jdata_user_basic_info b
+        on  a.user_id = b.user_id order by className ,userId ;
     </select>
+
+
     <select id="getRankingList" resultType="cn.edu.swpu.jdata_exam.entity.UserScore2">
         select a.user_id  as userId,max(accuracy) as accuracy,b.username as username
         from jdata_user_score a

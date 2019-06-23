@@ -57,7 +57,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable()           //关闭csrf
                 .authorizeRequests()      //授权配置
                 .antMatchers(HttpMethod.GET,"/info/**","swagger-ui.html","/test/**","/user/login","/user/getCode","/swagger**","/v2/**").permitAll()
-                .antMatchers(HttpMethod.POST,"/user/register","/user/login").permitAll()
+                .antMatchers(HttpMethod.POST,"/user/register","/user/login","/file/**").permitAll()
                 .antMatchers(HttpMethod.OPTIONS,"/user/login").permitAll()
                 .antMatchers("swagger-ui.html","/test/**","/user/select/score").hasRole("ADMIN")
                 .anyRequest()          //任何请求

@@ -6,6 +6,7 @@ import cn.edu.swpu.jdata_exam.enums.BackMessageEnum;
 import cn.edu.swpu.jdata_exam.enums.ExceptionEnum;
 import cn.edu.swpu.jdata_exam.exception.JdataExamException;
 import cn.edu.swpu.jdata_exam.service.FileService;
+import cn.edu.swpu.jdata_exam.utils.NameChangeUtil;
 import cn.edu.swpu.jdata_exam.utils.ResultVoUtil;
 import cn.edu.swpu.jdata_exam.utils.util.CsvUtil;
 import cn.edu.swpu.jdata_exam.utils.util.LocalExecute;
@@ -182,7 +183,7 @@ public class FileServiceImpl implements FileService {
         row.setHeight((short)(22.50*20));
         row.createCell(1).setCellValue("学生Id");
         row.createCell(2).setCellValue("准确率");
-        row.createCell(3).setCellValue("第N次提交");
+        row.createCell(3).setCellValue("学生所在班级");
         row.createCell(4).setCellValue("提交时间");
 //        for(int i = 1;i <= 4;i++){
 //            row.getCell(i).setCellStyle(getStyle(wb,1));
@@ -193,7 +194,8 @@ public class FileServiceImpl implements FileService {
             UserScore userScore = userScoreList.get(i);
             row.createCell(1).setCellValue(userScore.getUserId());
             row.createCell(2).setCellValue(userScore.getAccuracy());
-            row.createCell(3).setCellValue(userScore.getFrequency());
+            String className = NameChangeUtil.getRealName(String.valueOf(userScore.getClassName()));
+            row.createCell(3).setCellValue(className);
             Date date = userScore.getDateTime();
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             String formatDate = simpleDateFormat.format(date);

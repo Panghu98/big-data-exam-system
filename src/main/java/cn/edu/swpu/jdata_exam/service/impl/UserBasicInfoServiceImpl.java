@@ -140,14 +140,7 @@ public class UserBasicInfoServiceImpl implements UserBasicInfoService {
         if (userBasicInfoDAO.getUserById(registerUser.getUserId())!=null){
             return ResultVoUtil.error(401,"该学号已经注册");
         }
-
-        RegisterUser user = new RegisterUser();
-        user.setClassName(NameChangeUtil.getRealName(registerUser.getClassName()));
-        user.setUserId(registerUser.getUserId());
-        user.setUsername(registerUser.getUsername());
-        user.setUserPassword(registerUser.getUserPassword());
-
-        userBasicInfoDAO.addUser(user);
+        userBasicInfoDAO.addUser(registerUser);
 
         return ResultVoUtil.success();
 

@@ -21,8 +21,8 @@ public class UserScore implements Serializable {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date dateTime;
 
-    //提交次数
-    private Integer frequency;
+    //班级名称
+    private Integer className;
 
     //准确率
     private String accuracy;
