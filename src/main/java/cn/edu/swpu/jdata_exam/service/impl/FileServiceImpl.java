@@ -164,11 +164,11 @@ public class FileServiceImpl implements FileService {
         HSSFSheet sheet =wb.createSheet();
         HSSFRow row;
 
-//        row = sheet.createRow(0);
-//        row.setHeight((short)(26.25*20));
-//        row.createCell(0).setCellValue("学生成绩表");
+        row = sheet.createRow(1);
+        row.setHeight((short)(26.25*20));
+        row.createCell(0).setCellValue("学生成绩表");
         //设置样式
-//        row.getCell(0).setCellStyle(getStyle(wb,0));
+        row.getCell(0).setCellStyle(getStyle(wb,0));
         for(int i = 1;i <= 3;i++){
 //            row.createCell(i).setCellStyle(getStyle(wb,0));
         }

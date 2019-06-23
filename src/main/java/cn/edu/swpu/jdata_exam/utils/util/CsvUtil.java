@@ -28,7 +28,7 @@ public class CsvUtil {
 
 
 
-    private static Integer number = 85443;//数据条数限制
+    private static Integer number = 15001;//数据条数限制
 //    private static Integer number = 4;//测试
 
     public static boolean read(String filePath, String name) {
@@ -106,7 +106,7 @@ public class CsvUtil {
 
 
         /**判断数据量**/
-        if (list.size() == 0) {
+        if (list.size() < 15000) {
             log.info("[数据数目不对,文件有" + list.size() + "条数据]");
             return false;
         }
