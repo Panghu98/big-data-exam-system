@@ -39,7 +39,7 @@ import java.util.concurrent.TimeUnit;
 @Service
 public class FileServiceImpl implements FileService {
 
-    public final static String prefixKey = "username : ";
+    public final static String prefixKey = "username--";
 
     private RedisTemplate<String, String> redisTemplate;
 
@@ -55,7 +55,7 @@ public class FileServiceImpl implements FileService {
     @Override
     public ResultVo uploadFile(HttpServletRequest request, MultipartFile file) {
 
-        String userId = AuthenticationUtil.getAuthUserId()+prefixKey;
+        String userId = prefixKey+AuthenticationUtil.getAuthUserId();
 
 
         //如果存在则不进行上传
@@ -63,8 +63,7 @@ public class FileServiceImpl implements FileService {
             return ResultVoUtil.error(ExceptionEnum.FILE_HAS_UPLOADED.getCode(),
                             ExceptionEnum.FILE_HAS_UPLOADED.getMessage());
         }
-        //将用户的学放入缓存当中，缓存you效则不能上传
-        saveInCache(userId);
+
 
         /**判断是否为空**/
         if (file.isEmpty()) {
@@ -99,6 +98,8 @@ public class FileServiceImpl implements FileService {
         }
 
 
+        //将用户的学放入缓存当中，缓存you效则不能上传
+        saveInCache(userId);
         log.info("本地上传成功");
 
 
