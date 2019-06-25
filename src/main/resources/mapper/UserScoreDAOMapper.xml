@@ -6,13 +6,10 @@
 
     <!--UserScore getScoreById(String userId);-->
     <select id="getScoreById" resultType="cn.edu.swpu.jdata_exam.entity.UserScore2">
-        SELECT
-        a.user_id userId,max(accuracy) as  accuracy ,a.date_time as `datetime`,b.username as username
-        FROM
-        jdata_user_score a inner join jdata_user_basic_info b on a.user_id = b.user_id
-        WHERE
-        a.user_id=#{userId}
-        group BY a.date_time DESC
+       SELECT  a.user_id as userId,b.username as username ,max(a.accuracy) as accuracy
+       FROM    jdata_user_score a inner join jdata_user_basic_info b on a.user_id = b.user_id
+       WHERE a.user_id = #{userId} order by `accuracy` limit 1 ;
+
     </select>
 
     <!--int addScore(UserScore userScore);-->
