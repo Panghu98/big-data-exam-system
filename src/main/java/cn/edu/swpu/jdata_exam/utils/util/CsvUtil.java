@@ -22,7 +22,7 @@ public class CsvUtil {
     /**
      * 本机位置
      **/
-    public static String UPLOADED_LOCAL_FOLDER = "/root/home/panghu/Project/exam/data/";
+    public static String UPLOADED_LOCAL_FOLDER = "/root/home/panghu/Project/exam/temp/";
 
     public static String UPLOADED_LOCAL_FOLDER2 = "/root/home/panghu/Project/exam/file/";
 
@@ -80,6 +80,7 @@ public class CsvUtil {
                     String value2 = raws[1];
                     /**解析后带上空格**/
                     if (!(value1.equals("Id") && value2.equals("Label"))) {
+                        System.err.println("标题名称不对");
                         log.info("[标题名称不对]");
                         return false;
                     }

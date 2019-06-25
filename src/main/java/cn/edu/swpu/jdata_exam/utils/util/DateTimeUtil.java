@@ -32,5 +32,7 @@ public class DateTimeUtil {
     public static String getNowDir(){
         return convertDateToString(new Date());
     }
+    
+    
 
 }

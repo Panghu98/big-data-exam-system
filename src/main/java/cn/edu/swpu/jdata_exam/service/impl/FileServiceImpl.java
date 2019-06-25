@@ -10,6 +10,8 @@ import cn.edu.swpu.jdata_exam.utils.AuthenticationUtil;
 import cn.edu.swpu.jdata_exam.utils.NameChangeUtil;
 import cn.edu.swpu.jdata_exam.utils.ResultVoUtil;
 import cn.edu.swpu.jdata_exam.utils.util.CsvUtil;
+import cn.edu.swpu.jdata_exam.utils.util.LocalExecute;
+import cn.edu.swpu.jdata_exam.utils.util.SshUtil;
 import cn.edu.swpu.jdata_exam.vo.ResultVo;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.hssf.usermodel.*;
@@ -51,7 +53,9 @@ public class FileServiceImpl implements FileService {
         this.redisTemplate = redisTemplate;
     }
 
-    //上传CSV  结果
+    //上传CSV  结果  应该先上传文件到本地（用于验证文件是否符合要求），再上传到服务器  这样保证文件的正确性
+    //但是这里的本地其实就是服务器，有点矛盾
+
     @Override
     public ResultVo uploadFile(HttpServletRequest request, MultipartFile file) {
 
@@ -73,6 +77,14 @@ public class FileServiceImpl implements FileService {
 
 
 
+
+
+        if(!CsvUtil.read(filePath,file.getOriginalFilename())){
+
+            log.info("csv验证不通过。格式内容错误");
+            throw new JdataExamException(ExceptionEnum.FILE_FORMAT_ERROR);
+        }
+
         try {
             byte[] bytes = file.getBytes();
             Path path = Paths.get(filePath);
@@ -90,14 +102,6 @@ public class FileServiceImpl implements FileService {
 
         }
 
-
-        if(!CsvUtil.read(filePath,file.getOriginalFilename())){
-
-            log.info("csv验证不通过。格式内容错误");
-            throw new JdataExamException(ExceptionEnum.FILE_FORMAT_ERROR);
-        }
-
-
         //将用户的学放入缓存当中，缓存you效则不能上传
         saveInCache(userId);
         log.info("本地上传成功");
@@ -106,28 +110,27 @@ public class FileServiceImpl implements FileService {
 
 
 
-        //不使用SSH进行上传
-//
-//        try{
-//
-//            if (!SshUtil.putFile(filePath)){
-//
-//                log.info("转发服务器出错");
-//
-//                throw new JdataExamException(ExceptionEnum.FILE_UPLOAD_FAILED);
-//
-//            }
-//            log.info("ssh上传文件成功,删除本地临时文件...");
-//
-//            LocalExecute.removeFile(filePath);
-//
-//        }catch (Exception e){
-////            e.printStackTrace();
-//
-//            log.error("ssh上传文件失败,或删除文件失败");
-//
-//            throw new JdataExamException(ExceptionEnum.SSH_UPLOAD_FAILED);
-//        }
+
+        try{
+
+            if (!SshUtil.putFile(filePath)){
+
+                log.info("转发服务器出错");
+
+                throw new JdataExamException(ExceptionEnum.FILE_UPLOAD_FAILED);
+
+            }
+            log.info("ssh上传文件成功,删除本地临时文件...");
+
+            LocalExecute.removeFile(filePath);
+
+        }catch (Exception e){
+//            e.printStackTrace();
+
+            log.error("ssh上传文件失败,或删除文件失败");
+
+            throw new JdataExamException(ExceptionEnum.SSH_UPLOAD_FAILED);
+        }
 
 
         return ResultVoUtil.success(BackMessageEnum.FILE_UPLOAD_SUCCESS);
