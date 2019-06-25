@@ -22,7 +22,7 @@ public class CsvUtil {
     /**
      * 本机位置
      **/
-    public static String UPLOADED_LOCAL_FOLDER = "/root/home/panghu/Project/exam/temp/";
+    public static String UPLOADED_LOCAL_FOLDER = "/root/home/panghu/Project/exam/data/";
 
     public static String UPLOADED_LOCAL_FOLDER2 = "/root/home/panghu/Project/exam/file/";
 

@@ -77,14 +77,6 @@ public class FileServiceImpl implements FileService {
 
 
 
-
-
-        if(!CsvUtil.read(filePath,file.getOriginalFilename())){
-
-            log.info("csv验证不通过。格式内容错误");
-            throw new JdataExamException(ExceptionEnum.FILE_FORMAT_ERROR);
-        }
-
         try {
             byte[] bytes = file.getBytes();
             Path path = Paths.get(filePath);
@@ -101,6 +93,16 @@ public class FileServiceImpl implements FileService {
             throw new JdataExamException(ExceptionEnum.FILE_UPLOAD_FAILED);
 
         }
+
+
+
+
+        if(!CsvUtil.read(filePath,file.getOriginalFilename())){
+
+            log.info("csv验证不通过。格式内容错误");
+            throw new JdataExamException(ExceptionEnum.FILE_FORMAT_ERROR);
+        }
+
 
         //将用户的学放入缓存当中，缓存you效则不能上传
         saveInCache(userId);
