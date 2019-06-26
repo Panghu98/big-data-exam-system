@@ -13,8 +13,8 @@ import org.springframework.stereotype.Component;
 /**
  * @author panghu
  */
-@Aspect
-@Component
+//@Aspect
+//@Component
 @Slf4j
 public class ServiceLogger {
 
@@ -44,12 +44,6 @@ public class ServiceLogger {
     }
 
 
-    @AfterReturning(pointcut = "serviceLogger()",returning = "ret")
-    public void afterReturning(Object ret){
-        log.info("\n");
-        log.info("service return : "+ret);
-        log.info("\n");
-    }
 
 
 

@@ -20,16 +20,18 @@ import java.util.List;
 public class CsvUtil {
 
     /**
-     * 本机位置
+     * 临时文件夹  用于文件的检测  检测通过之后上传到正确位置
      **/
-    public static String UPLOADED_LOCAL_FOLDER = "/root/home/panghu/Project/exam/data/";
+    public static String UPLOADED_LOCAL_FOLDER = "/root/home/panghu/Project/exam/temp/";
 
     public static String UPLOADED_LOCAL_FOLDER2 = "/root/home/panghu/Project/exam/file/";
 
 
 
-    private static Integer number = 15001;//数据条数限制
-//    private static Integer number = 4;//测试
+    //数据条数限制
+    private static Integer number = 15000;
+
+    private static Integer fileNameLength = 16;
 
     public static boolean read(String filePath, String name) {
 
@@ -41,6 +43,12 @@ public class CsvUtil {
         /**判断文件名是否正确**/
         if (!name.contains(".csv")) {
             log.info("[文件命名错误]");
+            return false;
+        }
+
+
+        //文件格式不是 16位
+        if (name.length()!=fileNameLength){
             return false;
         }
 
@@ -107,7 +115,7 @@ public class CsvUtil {
 
 
         /**判断数据量**/
-        if (list.size() < 15000) {
+        if (list.size()!=number) {
             log.info("[数据数目不对,文件有" + list.size() + "条数据]");
             return false;
         }

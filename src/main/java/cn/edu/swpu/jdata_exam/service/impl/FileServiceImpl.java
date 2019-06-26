@@ -104,35 +104,34 @@ public class FileServiceImpl implements FileService {
         }
 
 
+
+
+        //先上传到服务器中的临时文件夹，格式验证通过之后转发到带有脚本的文件夹中，保证正确性
+
+
+        try{
+
+            if (!SshUtil.putFile(filePath)){
+
+                log.info("转发服务器出错");
+
+                throw new JdataExamException(ExceptionEnum.FILE_UPLOAD_FAILED);
+
+            }
+            log.info("ssh上传文件成功,删除本地临时文件...");
+
+            LocalExecute.removeFile(filePath);
+
+        }catch (Exception e){
+
+            log.error("ssh上传文件失败,或删除文件失败");
+
+            throw new JdataExamException(ExceptionEnum.SSH_UPLOAD_FAILED);
+        }
+
         //将用户的学放入缓存当中，缓存you效则不能上传
         saveInCache(userId);
         log.info("本地上传成功");
-
-
-
-
-
-
-//        try{
-//
-//            if (!SshUtil.putFile(filePath)){
-//
-//                log.info("转发服务器出错");
-//
-//                throw new JdataExamException(ExceptionEnum.FILE_UPLOAD_FAILED);
-//
-//            }
-//            log.info("ssh上传文件成功,删除本地临时文件...");
-//
-//            LocalExecute.removeFile(filePath);
-//
-//        }catch (Exception e){
-////            e.printStackTrace();
-//
-//            log.error("ssh上传文件失败,或删除文件失败");
-//
-//            throw new JdataExamException(ExceptionEnum.SSH_UPLOAD_FAILED);
-//        }
 
 
         return ResultVoUtil.success(BackMessageEnum.FILE_UPLOAD_SUCCESS);

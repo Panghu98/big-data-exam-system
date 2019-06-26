@@ -1,6 +1,7 @@
 package cn.edu.swpu.jdata_exam.utils;
 
 import cn.edu.swpu.jdata_exam.enums.CodeEnum;
+import cn.edu.swpu.jdata_exam.exception.JdataExamException;
 import cn.edu.swpu.jdata_exam.vo.ResultVo;
 import org.springframework.http.HttpMethod;
 
@@ -37,7 +38,13 @@ public class ResultVoUtil {
         ResultVo resultVo = new ResultVo();
         resultVo.setCode(code);
         resultVo.setMessage(message);
-        resultVo.setData(null);
+        return resultVo;
+    }
+
+    private static ResultVo error(JdataExamException exception){
+        ResultVo resultVo = new ResultVo();
+        resultVo.setCode(exception.getCode());
+        resultVo.setMessage(exception.getMessage());
         return resultVo;
     }
 

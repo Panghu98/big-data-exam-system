@@ -30,7 +30,8 @@ public class VerifyCodeServiceImpl implements VerifyCodeService {
     @Autowired
     private RedisTemplate<String,String> redisTemplate;
 
-    private static int verifyCodeExpire = 2 * 60; //超时时间2min
+    //超时时间2min
+    private static int verifyCodeExpire = 2 * 60;
 
     private String codeHeader = "Verify-Code";
     /**

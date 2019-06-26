@@ -5,6 +5,10 @@ import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.*;
 import org.springframework.stereotype.Component;
 
+/**
+ * 暂时不需要使用
+ */
+
 @Aspect
 @Component
 @Slf4j
@@ -13,15 +17,22 @@ public class ControllerLogger {
     /**
      * 定义一个切入点表达式。确定那些类需要代理。以下切入点表示，controller包下的所有类的所有方法都会被代理
      */
-    @Pointcut(value = "execution(public * cn.edu.swpu.jdata_exam.controller.*.*(..) )")
-    public void controllerLog(){}
+
+
+    @Pointcut(value = "execution(public * cn.edu.swpu.jdata_exam.controller.UserController.*(..))")
+    public void userControllerLog(){}
+
+    @Pointcut(value = "execution(public * cn.edu.swpu.jdata_exam.controller.InfoController.*(..))")
+    public void infoControllerLog(){}
 
     /**
      * 前置方法。执行在controller之前。
      * JoinPoint对象
+     * 定义了三个切面  这样做是为了是的文件参数不被记录
      * @param point  封装了代理方法信息的对象，若用不到则可以忽略不写。
      */
-    @Before("controllerLog()")
+
+    @Before(value = "userControllerLog() || infoControllerLog()")
     public void before(JoinPoint point){
         log.info("controller aspect beginning");
 
@@ -45,7 +56,7 @@ public class ControllerLogger {
      * 后置增强。方法退出时执行。
      * @param ret
      */
-    @AfterReturning(pointcut = "controllerLog()",returning = "ret")
+    @AfterReturning(pointcut = "userControllerLog() ||infoControllerLog()",returning = "ret")
     public void afterReturing(Object ret){
         log.info("controller return "+ret);
     }
@@ -54,7 +65,7 @@ public class ControllerLogger {
      * 异常抛出增长。
      * @param throwable
      */
-    @AfterThrowing(pointcut = "controllerLog()",throwing = "throwable")
+    @AfterThrowing(pointcut = " userControllerLog() ||infoControllerLog()",throwing = "throwable")
     public void afterThrowing(Throwable throwable){
 
         log.info("controller throw "+ throwable.getMessage());
