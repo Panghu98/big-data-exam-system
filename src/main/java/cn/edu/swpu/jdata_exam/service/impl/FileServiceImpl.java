@@ -41,7 +41,12 @@ import java.util.concurrent.TimeUnit;
 @Service
 public class FileServiceImpl implements FileService {
 
-    public final static String prefixKey = "username--";
+    private final static String prefixKey = "username--";
+
+    //限制大小
+    private final static long MAX_SIZE = 135*1024;
+
+    private final static long MIN_SIZE = 130*1024;
 
     private RedisTemplate<String, String> redisTemplate;
 
@@ -96,11 +101,17 @@ public class FileServiceImpl implements FileService {
 
 
 
-
         if(!CsvUtil.read(filePath,file.getOriginalFilename())){
 
             log.info("csv验证不通过。格式内容错误");
             throw new JdataExamException(ExceptionEnum.FILE_FORMAT_ERROR);
+        }
+
+        long size = file.getSize();
+
+        if ((size>MAX_SIZE  || size <MIN_SIZE  )){
+            log.error("文件大小不正确");
+            throw new JdataExamException(ExceptionEnum.FILE_SIZE_NOT_CORRECT);
         }
 
 
@@ -142,7 +153,7 @@ public class FileServiceImpl implements FileService {
     public ResultVo submitFile(HttpServletRequest request, MultipartFile file) {
 
         boolean flag = checkTime();
-        if (flag == false){
+        if (!flag){
             throw new JdataExamException(ExceptionEnum.SUBMIT_NOT_OPEN);
         }
 
@@ -163,25 +174,6 @@ public class FileServiceImpl implements FileService {
 
         }
         System.out.println("上传本地成功！");
-
-//
-//        try {
-//
-//            if (!SshUtil.putFile(filePath)){
-//
-//                throw new JdataExamException(ExceptionEnum.FILE_UPLOAD_FAILED);
-//
-//            }
-//            log.info("ssh上传文件成功,删除本地临时文件...");
-//
-//            LocalExecute.removeFile(filePath);
-//
-//        }catch (Exception e){
-//
-//            log.error("ssh上传文件失败,或删除文件失败");
-//
-//            throw new JdataExamException(ExceptionEnum.SSH_UPLOAD_FAILED);
-//        }
 
 
         return ResultVoUtil.success(BackMessageEnum.FILE_UPLOAD_SUCCESS);

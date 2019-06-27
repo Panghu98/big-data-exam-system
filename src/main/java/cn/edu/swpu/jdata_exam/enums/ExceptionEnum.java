@@ -19,6 +19,7 @@ public enum ExceptionEnum {
     FILE_NAME_ERROR(15,"文件命名错误"),
     PLEASE_LOGIN_FIRST(16,"请先登录"),
     GET_CODE_ERROR(17,"获取验证码失败"),
+    FILE_SIZE_NOT_CORRECT(18,"文件大小不正确"),
     VERIFY_CODE_ERROR(19,"验证码错误"),
     FILE_HAS_UPLOADED(21,"每天只能提交一次结果，你今天已经提交过了"),
     NOT_PERMISSION(22,"权限不够，无法访问"),
