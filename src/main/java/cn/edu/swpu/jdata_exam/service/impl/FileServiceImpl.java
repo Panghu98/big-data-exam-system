@@ -44,9 +44,9 @@ public class FileServiceImpl implements FileService {
     private final static String prefixKey = "username--";
 
     //限制大小
-    private final static long MAX_SIZE = 135*1024;
+    private final static long MAX_SIZE = 180*1024;
 
-    private final static long MIN_SIZE = 130*1024;
+    private final static long MIN_SIZE = 100*1024;
 
     private RedisTemplate<String, String> redisTemplate;
 
@@ -100,19 +100,22 @@ public class FileServiceImpl implements FileService {
         }
 
 
-
-        if(!CsvUtil.read(filePath,file.getOriginalFilename())){
-
-            log.info("csv验证不通过。格式内容错误");
-            throw new JdataExamException(ExceptionEnum.FILE_FORMAT_ERROR);
+        //如果  文件逻辑判断不通过  直接返回错误结果
+        ResultVo result = CsvUtil.read(filePath,file.getOriginalFilename());
+        if (result.getCode()!=0){
+            return result;
         }
+
+
 
         long size = file.getSize();
 
-        if ((size>MAX_SIZE  || size <MIN_SIZE  )){
+        if ((size>MAX_SIZE  || size <  MIN_SIZE  )){
             log.error("文件大小不正确");
             throw new JdataExamException(ExceptionEnum.FILE_SIZE_NOT_CORRECT);
         }
+
+
 
 
 
