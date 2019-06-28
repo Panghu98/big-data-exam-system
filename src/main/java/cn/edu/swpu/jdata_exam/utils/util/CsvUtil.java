@@ -124,8 +124,12 @@ public class CsvUtil {
                         if (i == 0) {
                             /**防止ID为空**/
                             if (x != null && !"".equals(x)) {
-                                hashSets.add(Integer.parseInt(x));
-                                list.add(Integer.parseInt(x));
+                                try {
+                                    hashSets.add(Integer.parseInt(x));
+                                    list.add(Integer.parseInt(x));
+                                }catch (Exception e){
+                                    return ResultVoUtil.error(ExceptionEnum.FILE_DATA_FORMAT_ERROR);
+                                }
                             }
                         }
 
