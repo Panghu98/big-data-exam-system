@@ -86,14 +86,10 @@ public class FileServiceImpl implements FileService {
             byte[] bytes = file.getBytes();
             Path path = Paths.get(filePath);
 
-            System.out.println(file.getOriginalFilename());
-
             Files.write(path, bytes);
         } catch (Exception e) {
 
             System.out.println("上传本地失败！");
-
-            e.printStackTrace();
 
             throw new JdataExamException(ExceptionEnum.FILE_UPLOAD_FAILED);
 
@@ -205,28 +201,21 @@ public class FileServiceImpl implements FileService {
         sheet.addMergedRegion(columnRegion);
 
         row = sheet.createRow(1);
-//        row.createCell(0).setCellStyle(getStyle(wb,3));
         row.setHeight((short)(22.50*20));
         row.createCell(1).setCellValue("学生Id");
-        row.createCell(2).setCellValue("准确率");
+        row.createCell(2).setCellValue("学生姓名");
         row.createCell(3).setCellValue("学生所在班级");
-        row.createCell(4).setCellValue("提交时间");
-//        for(int i = 1;i <= 4;i++){
-//            row.getCell(i).setCellStyle(getStyle(wb,1));
-//        }
+        row.createCell(4).setCellValue("准确率");
+
 
         for(int i = 0;i<userScoreList.size();i++){
             row = sheet.createRow(i+2);
             UserScore userScore = userScoreList.get(i);
             row.createCell(1).setCellValue(userScore.getUserId());
-            row.createCell(2).setCellValue(userScore.getAccuracy());
+            row.createCell(4).setCellValue(userScore.getAccuracy());
             String className = NameChangeUtil.getRealName(String.valueOf(userScore.getClassName()));
             row.createCell(3).setCellValue(className);
-            Date date = userScore.getDateTime();
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            String formatDate = simpleDateFormat.format(date);
-            System.out.println(formatDate);
-            row.createCell(4).setCellValue(formatDate);
+            row.createCell(2).setCellValue(userScore.getUsername());
             for(int j = 1;j <= 4;j++){
                 row.getCell(j).setCellStyle(getStyle(wb,2));
             }
@@ -306,15 +295,13 @@ public class FileServiceImpl implements FileService {
         int day = calendar.get(Calendar.DAY_OF_MONTH);
         int hours = calendar.get(Calendar.HOUR_OF_DAY);
         int month = calendar.get(Calendar.MONTH)+1;
-        //如果为6月
-        if (month == 6){
-            if (day == 26 && hours >= 10){
-                return true;
-            }else {
-                return day > 26;
+        if (month == 7){
+            if (day >= 3 && hours >= 12){
+                return false;
             }
-        }else if (month == 7){
-            return day == 1 && hours <= 12;
+            else {
+                return day < 3;
+            }
         }
         return false;
     }
