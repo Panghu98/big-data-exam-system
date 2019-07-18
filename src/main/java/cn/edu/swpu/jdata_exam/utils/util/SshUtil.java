@@ -11,18 +11,18 @@ import java.util.Date;
 public class SshUtil {
     public static String ip = "localhost";
 
-    public static String uploadPath = "/root/home/panghu/Project/exam/data/";
+    public static String uploadPath = "/home/panghu/IdeaProjects/big-data-exam/src/main/resources/file/";
 
-    public static String username = "root";
+    public static String username = "panghu";
 
-    public static String password  = "Abc123456";
+    public static String password  = "000411";
     //实质上是file
     public static boolean putFile(String localFilePath) throws IOException {
         //目标服务器地址
         Connection conn = new Connection(ip);
         conn.connect();
         boolean isAuthenticated = conn.authenticateWithPassword(username, password);
-        if (isAuthenticated == false){
+        if (!isAuthenticated){
             throw new IOException("Authentication failed.");
         }
 

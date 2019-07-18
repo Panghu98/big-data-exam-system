@@ -25,8 +25,6 @@ public class UserScoreServiceImpl implements UserScoreService {
     @Autowired
     private UserScoreDAO userScoreDAO;
 
-    //成绩缓存时间 30分钟
-    private long expirationTime = 30*60;
 
 
     /**

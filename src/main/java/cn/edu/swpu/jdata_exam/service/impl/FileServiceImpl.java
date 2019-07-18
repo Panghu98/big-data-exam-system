@@ -31,9 +31,7 @@ import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -191,8 +189,8 @@ public class FileServiceImpl implements FileService {
         row.createCell(0).setCellValue("学生成绩表");
         //设置样式
         row.getCell(0).setCellStyle(getStyle(wb,0));
+
         for(int i = 1;i <= 3;i++){
-//            row.createCell(i).setCellStyle(getStyle(wb,0));
         }
         CellRangeAddress rowRegion = new CellRangeAddress(0,0,0,3);
         sheet.addMergedRegion(rowRegion);

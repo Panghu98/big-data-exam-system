@@ -25,9 +25,9 @@ public class CsvUtil {
     /**
      * 临时文件夹  用于文件的检测  检测通过之后上传到正确位置
      **/
-    public static String UPLOADED_LOCAL_FOLDER = "/root/home/panghu/Project/exam/temp/";
+//    public static String UPLOADED_LOCAL_FOLDER = "/root/home/panghu/Project/exam/temp/";
 
-//    public static String UPLOADED_LOCAL_FOLDER =  "/home/panghu/IdeaProjects/big-data-exam/src/main/resources/temp/";
+    public static String UPLOADED_LOCAL_FOLDER =  "/home/panghu/IdeaProjects/big-data-exam/src/main/resources/temp/";
 
     public static String UPLOADED_LOCAL_FOLDER2 = "/root/home/panghu/Project/exam/file/";
 
@@ -105,11 +105,14 @@ public class CsvUtil {
             while (csvReader.readRecord()) {
                 /**读一整行**/
                 String[] raws = csvReader.getRawRecord().split(",");
+
                 /**判断第一行**/
                 if (cs == 0) {
                     cs++;
                     String value1 = raws[0];
                     String value2 = raws[1];
+
+                    System.out.println(raws.length);
                     /**解析后带上空格**/
                     if (!(value1.equals("Id") && value2.equals("Label"))) {
                         System.err.println("标题名称不对");

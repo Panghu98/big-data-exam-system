@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 @Slf4j
 @RequestMapping(value = "/user",produces = { "application/json;charset=UTF-8" })
 @RestController
-@CrossOrigin(origins = "http://47.107.61.232:5488")
+@CrossOrigin(origins = "http://192.168.8.100:5488")
 public class UserController {
 
     @Autowired
@@ -36,7 +36,7 @@ public class UserController {
      * @return
      */
     @PostMapping(value = "/login")
-    public ResultVo login(@RequestBody UserLogin userLogin, HttpServletRequest request, HttpServletResponse response){
+    public ResultVo login( UserLogin userLogin, HttpServletRequest request, HttpServletResponse response){
         log.info("进入/login服务");
         return userBasicInfoService.userLogin(userLogin,request,response);
     }

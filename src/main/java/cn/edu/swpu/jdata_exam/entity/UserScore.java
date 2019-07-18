@@ -17,9 +17,7 @@ public class UserScore implements Serializable {
     //学生学号
     private String userId;
 
-    //提交时间
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date dateTime;
+    private String username;
 
     //班级名称
     private Integer className;

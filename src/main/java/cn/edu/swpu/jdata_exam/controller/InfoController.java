@@ -19,7 +19,7 @@ import java.io.IOException;
 @Slf4j
 @RequestMapping(value = "/info",produces = { "application/json;charset=UTF-8" })
 @RestController
-@CrossOrigin(origins = "http://47.107.61.232:5488")
+@CrossOrigin(origins = "http://192.168.8.100:5488")
 public class InfoController {
 
     @Autowired

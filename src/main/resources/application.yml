@@ -1,13 +1,13 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/JdataExam?useUnicode=true&characterEncoding=utf8&useSSL=true
+    url: jdbc:mysql://47.107.61.232:3306/JdataExam?useUnicode=true&characterEncoding=utf8&useSSL=true
     username: root
-    password: "000411@Dgh"
+    password: root
   redis:
     port: 6380
     host: 127.0.0.1
-    password: "000411"
+    password: root
     database: 1
     jedis:
       pool:
@@ -25,7 +25,6 @@ mybatis:
   mapper-locations: classpath:mapper/*.xml
 server:
   port: 5488
-  connection-timeout: 120
 
 
 
