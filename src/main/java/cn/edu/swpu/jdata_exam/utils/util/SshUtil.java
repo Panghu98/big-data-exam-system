@@ -15,7 +15,7 @@ public class SshUtil {
 
     public static String username = "panghu";
 
-    public static String password  = "000411";
+    public static String password  = "root";
     //实质上是file
     public static boolean putFile(String localFilePath) throws IOException {
         //目标服务器地址
