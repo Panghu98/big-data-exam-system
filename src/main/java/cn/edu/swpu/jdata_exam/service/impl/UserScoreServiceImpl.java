@@ -1,29 +1,33 @@
 package cn.edu.swpu.jdata_exam.service.impl;
 
 import cn.edu.swpu.jdata_exam.dao.UserScoreDAO;
-import cn.edu.swpu.jdata_exam.entity.UserScore;
 import cn.edu.swpu.jdata_exam.entity.UserScore2;
-import cn.edu.swpu.jdata_exam.entity.dto.ResponseUserScore;
 import cn.edu.swpu.jdata_exam.service.UserScoreService;
 import cn.edu.swpu.jdata_exam.utils.AuthenticationUtil;
 import cn.edu.swpu.jdata_exam.utils.ResultVoUtil;
 import cn.edu.swpu.jdata_exam.vo.ResultVo;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 @Slf4j
 @Service
 public class UserScoreServiceImpl implements UserScoreService {
 
+
+    private static String PREFIX = "score-";
+
+    //人数固定
+    private static Long END = 400L;
+
     @Autowired
     private UserScoreDAO userScoreDAO;
+
+    @Autowired
+    private RedisTemplate redisTemplate;
 
 
 
@@ -43,7 +47,10 @@ public class UserScoreServiceImpl implements UserScoreService {
 
     @Override
     public ResultVo getRankingList() {
-        return ResultVoUtil.success(userScoreDAO.getRankingList(userScoreDAO.getUserList()));
+        if (redisTemplate.opsForList().range(PREFIX,0,END) == null){
+            List<UserScore2> list = userScoreDAO.getRankingList();
+        }
+        return ResultVoUtil.success(userScoreDAO.getRankingList());
     }
 
     //检验用户token中的userId与查询的userId是否一致。

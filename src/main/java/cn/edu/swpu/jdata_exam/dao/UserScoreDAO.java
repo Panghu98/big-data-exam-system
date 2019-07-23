@@ -27,7 +27,7 @@ public interface UserScoreDAO {
     //更新成绩
 //    int updateScore(UserScore userScore);
 
-    List<UserScore2> getRankingList(List<Long> list);
+    List<UserScore2> getRankingList();
 
 
     List<Long> getUserList();

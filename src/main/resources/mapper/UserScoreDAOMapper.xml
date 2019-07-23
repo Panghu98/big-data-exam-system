@@ -23,21 +23,27 @@
     </insert>
 
     <select id="selectByTime" parameterType="date" resultType="cn.edu.swpu.jdata_exam.entity.UserScore">
-        select distinct a.`user_id` as userId,a.accuracy as accuracy,b.user_class as className,a.date_time as dateTime
+        select distinct  a.`user_id` as userId,max(accuracy) as accuracy,b.user_class as className,b.username as username
         from jdata_user_score a inner join jdata_user_basic_info b
-        on  a.user_id = b.user_id order by className ,userId ;
+        on  a.user_id = b.user_id group by className ,userId;
     </select>
 
 
     <select id="getRankingList" resultType="cn.edu.swpu.jdata_exam.entity.UserScore2">
-        select a.user_id  as userId,max(accuracy) as accuracy,b.username as username
-        from jdata_user_score a
-        inner join jdata_user_basic_info b on a.user_id = b.user_id  where a.user_id in
-        <foreach collection="list" separator="," open="(" close=")" index="" item="type">
-            #{type, jdbcType=VARCHAR}
-        </foreach>
+<!--        select a.user_id  as userId,max(accuracy) as accuracy,b.username as username-->
+<!--        from jdata_user_score a-->
+<!--        inner join jdata_user_basic_info b on a.user_id = b.user_id  where a.user_id in-->
+<!--        <foreach collection="list" separator="," open="(" close=")" index="" item="type">-->
+<!--            #{type, jdbcType=VARCHAR}-->
+<!--        </foreach>-->
 
-        group by userId order by accuracy desc
+<!--        group by userId order by accuracy desc-->
+<!--直接在一次SQL会话中查询出结果,效率更高-->
+        select distinct a.user_id as userId,max(accuracy) as accuracy,b.username as username
+        from jdata_user_score a
+        inner join jdata_user_basic_info b
+            on a.user_id = b.user_id
+        group  by userId order by accuracy desc limit 400 ;
     </select>
     <select id="getUserList" resultType="java.lang.Long">
         select distinct user_id from jdata_user_score ;

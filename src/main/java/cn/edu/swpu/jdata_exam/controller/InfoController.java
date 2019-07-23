@@ -38,6 +38,11 @@ public class InfoController {
         fileService.getExcel(response);
     }
 
+    /**
+     * 获取排行榜频繁查询,放入redis
+     * 定时将最新的排行榜写入缓存
+     * @return
+     */
     @GetMapping(value = "/getRankingList")
     public ResultVo getRankingList(){
         return userScoreService.getRankingList();
