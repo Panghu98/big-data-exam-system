@@ -25,7 +25,7 @@ public class UserScoreDAOTest {
     @Test
     public void getRankingList() {
 
-        List<UserScore2> list = userScoreDAO.getRankingList(userScoreDAO.getUserList());
+        List<UserScore2> list = userScoreDAO.getRankingList();
         for (UserScore2 score2:list
              ) {
             System.out.print(score2.toString());

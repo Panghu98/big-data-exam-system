@@ -43,7 +43,7 @@
         from jdata_user_score a
         inner join jdata_user_basic_info b
             on a.user_id = b.user_id
-        group  by userId order by accuracy desc limit 400 ;
+        group  by userId order by accuracy desc;
     </select>
     <select id="getUserList" resultType="java.lang.Long">
         select distinct user_id from jdata_user_score ;
