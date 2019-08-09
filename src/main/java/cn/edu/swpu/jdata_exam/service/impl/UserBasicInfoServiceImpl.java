@@ -15,7 +15,6 @@ import cn.edu.swpu.jdata_exam.service.VerifyCodeService;
 import cn.edu.swpu.jdata_exam.support.UserAuthenticationProvider;
 import cn.edu.swpu.jdata_exam.utils.AuthenticationUtil;
 import cn.edu.swpu.jdata_exam.utils.CheckUserUtil;
-import cn.edu.swpu.jdata_exam.utils.NameChangeUtil;
 import cn.edu.swpu.jdata_exam.utils.ResultVoUtil;
 import cn.edu.swpu.jdata_exam.vo.ResultVo;
 import lombok.extern.slf4j.Slf4j;

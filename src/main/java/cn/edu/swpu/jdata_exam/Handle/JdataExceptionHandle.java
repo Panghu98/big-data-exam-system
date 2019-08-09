@@ -6,12 +6,17 @@ import cn.edu.swpu.jdata_exam.exception.JdataExamException;
 import cn.edu.swpu.jdata_exam.utils.ResultVoUtil;
 import cn.edu.swpu.jdata_exam.vo.ResultVo;
 import lombok.extern.slf4j.Slf4j;
+import org.aspectj.lang.annotation.Aspect;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+/**
+ * @author panghu
+ */
 @Slf4j
-//@ControllerAdvice
+@Aspect
+@ControllerAdvice
 public class JdataExceptionHandle {
 
     @ResponseBody

@@ -14,5 +14,7 @@ public interface FileService {
 
     ResultVo submitFile(HttpServletRequest request, MultipartFile multipartFile);
 
-    public void getExcel (HttpServletResponse response) throws IOException;
+    public ResultVo getExcel (HttpServletResponse response);
+
+    public ResultVo getZipFile(HttpServletResponse response);
 }

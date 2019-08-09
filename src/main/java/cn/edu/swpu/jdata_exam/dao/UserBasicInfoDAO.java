@@ -14,15 +14,29 @@ import java.util.List;
 @Mapper
 public interface UserBasicInfoDAO {
 
-    //根据id查询信息
+    /**
+     * 根据id查询信息
+     * @param userId  用户ID
+     * @return 用户信息
+     */
     UserBasicInfo getUserById(String userId);
 
-    //添加用户
-    int addUser(RegisterUser registerUser);
+    /**
+     * 添加用户
+     * @param registerUser  注册用户
+     */
+    void addUser(RegisterUser registerUser);
 
-    //修改密码
-    int updatePw(UserBasicInfo userBasicInfo);
+    /**
+     * 修改密码
+     * @param userBasicInfo 用户信息
+     */
+    void updatePw(UserBasicInfo userBasicInfo);
 
+    /**
+     * 获取用户列表
+     * @return  用户列表
+     */
     List<Long> getUserList();
 
 }

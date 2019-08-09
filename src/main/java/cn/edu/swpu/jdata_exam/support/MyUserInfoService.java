@@ -40,27 +40,7 @@ public class MyUserInfoService implements UserDetailsService {
 
         String password = userBasicInfo.getUserPassword();
 
-
-//        //GrantedAuthority是security提供的权限类，
-//        List<GrantedAuthority> grantedAuthorityList = new ArrayList<GrantedAuthority>();
-//
-//        //获取该用户角色，并放入list中
-//        getRoles(userBasicInfo,grantedAuthorityList);
-
-
         return new User(userId,password,AuthorityUtils.commaSeparatedStringToAuthorityList("ROLE_ADMIN"));
     }
-
-
-    /**
-     * 获取对应的角色
-     * @param userBasicInfo
-     * @param grantedAuthorityList
-     */
-//    public void getRoles(UserBasicInfo userBasicInfo,List<GrantedAuthority> grantedAuthorityList){
-//        grantedAuthorityList.add(new SimpleGrantedAuthority("ROLE_"+userBasicInfo.getRole()));
-//    }
-
-
 
 }

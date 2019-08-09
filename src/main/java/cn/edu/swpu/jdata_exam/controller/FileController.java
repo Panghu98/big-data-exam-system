@@ -5,13 +5,11 @@ import cn.edu.swpu.jdata_exam.service.FileService;
 import cn.edu.swpu.jdata_exam.vo.ResultVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.concurrent.Callable;
 
 @Slf4j
@@ -60,6 +58,11 @@ public class FileController {
     public ResultVo submitFile(HttpServletRequest request,
                                @RequestParam("file") MultipartFile file){
         return fileService.submitFile(request,file);
+    }
+
+    @GetMapping("/downloadAllFiles")
+    public ResultVo downloadAllFiles(HttpServletResponse response){
+        return fileService.getZipFile(response);
     }
 
 }

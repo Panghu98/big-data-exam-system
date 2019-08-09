@@ -36,7 +36,7 @@ public class UserController {
      * @return
      */
     @PostMapping(value = "/login")
-    public ResultVo login( UserLogin userLogin, HttpServletRequest request, HttpServletResponse response){
+    public ResultVo login(@RequestBody UserLogin userLogin, HttpServletRequest request, HttpServletResponse response){
         log.info("进入/login服务");
         return userBasicInfoService.userLogin(userLogin,request,response);
     }

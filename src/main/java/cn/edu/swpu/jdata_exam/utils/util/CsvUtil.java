@@ -25,15 +25,8 @@ public class CsvUtil {
     /**
      * 临时文件夹  用于文件的检测  检测通过之后上传到正确位置
      **/
-//    public static String UPLOADED_LOCAL_FOLDER = "/root/home/panghu/Project/exam/temp/";
-
-    public static String UPLOADED_LOCAL_FOLDER =  "/home/panghu/IdeaProjects/big-data-exam/src/main/resources/temp/";
-
-    public static String UPLOADED_LOCAL_FOLDER2 = "/root/home/panghu/Project/exam/file/";
 
 
-
-    //数据条数限制
     private static Integer number = 15000;
 
     private static Integer fileNameLength = 16;

@@ -16,16 +16,21 @@ import java.util.List;
 @Mapper
 public interface UserScoreDAO {
 
-    //根据id查询成绩信息
+    /**
+     * 根据id查询成绩信息
+     * @param userId  用户ID
+      */
     UserScore2 getScoreById(String userId);
 
-    //添加成绩
-    int addScore(UserScore userScore);
+    /**
+     * 添加成绩
+     * @param userScore
+     * @return
+     */
+    void addScore(UserScore userScore);
 
     List<UserScore> selectByTime();
 
-    //更新成绩
-//    int updateScore(UserScore userScore);
 
     List<UserScore2> getRankingList();
 

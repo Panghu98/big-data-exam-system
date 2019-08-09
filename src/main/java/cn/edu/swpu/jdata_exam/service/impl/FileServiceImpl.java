@@ -20,6 +20,7 @@ import org.apache.poi.ss.usermodel.FillPatternType;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -41,7 +42,6 @@ public class FileServiceImpl implements FileService {
 
     private final static String prefixKey = "username--";
 
-    //限制大小
     private final static long MAX_SIZE = 180*1024;
 
     private final static long MIN_SIZE = 100*1024;
@@ -49,6 +49,12 @@ public class FileServiceImpl implements FileService {
     private RedisTemplate<String, String> redisTemplate;
 
     private UserScoreDAO userScoreDAO;
+
+    @Value("${file.temp}")
+    private String tempFolder;
+
+    @Value("${file.evidence}")
+    private String evidenceFolder;
 
     @Autowired
     public FileServiceImpl(UserScoreDAO userScoreDAO, RedisTemplate<String, String> redisTemplate) {
@@ -76,7 +82,7 @@ public class FileServiceImpl implements FileService {
         if (file.isEmpty()) {
             throw new JdataExamException(ExceptionEnum.FILE_EMPTY);
         }
-        String filePath = CsvUtil.UPLOADED_LOCAL_FOLDER + file.getOriginalFilename();
+        String filePath = tempFolder + file.getOriginalFilename();
 
 
 
@@ -154,7 +160,7 @@ public class FileServiceImpl implements FileService {
             throw new JdataExamException(ExceptionEnum.SUBMIT_NOT_OPEN);
         }
 
-        String filePath = CsvUtil.UPLOADED_LOCAL_FOLDER2 + file.getOriginalFilename();
+        String filePath = evidenceFolder + file.getOriginalFilename();
         try {
             byte[] bytes = file.getBytes();
             Path path = Paths.get(filePath);
@@ -177,7 +183,7 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
-    public void getExcel(HttpServletResponse response) throws IOException {
+    public ResultVo getExcel(HttpServletResponse response) {
         List<UserScore> userScoreList = userScoreDAO.selectByTime();
 
         HSSFWorkbook wb = new HSSFWorkbook();
@@ -229,10 +235,20 @@ public class FileServiceImpl implements FileService {
 
         response.setContentType("application/vnd.ms-excel;charset=utf-8");
         response.setHeader("Content-disposition", "attachment;filename=score.xls");
-        OutputStream os = response.getOutputStream();
-        wb.write(os);
-        os.flush();
-        os.close();
+        try {
+            OutputStream os = response.getOutputStream();
+            wb.write(os);
+            os.flush();
+            os.close();
+        }catch (IOException e){
+            throw new JdataExamException(ExceptionEnum.IO_EXCEPTION);
+        }
+        return ResultVoUtil.success();
+    }
+
+    @Override
+    public ResultVo getZipFile(HttpServletResponse response) {
+        return null;
     }
 
     /**
@@ -308,7 +324,10 @@ public class FileServiceImpl implements FileService {
         return redisTemplate.hasKey(userId);
     }
 
-    //判断用户是否在同一天进行操作
+    /**
+     *     判断用户是否在同一天进行操作
+     * @param userId  用户ID
+     */
     private void saveInCache(String userId){
         redisTemplate.opsForValue().set(userId,"用户文件上传时间未过期",
                                         getTimeExpire(), TimeUnit.MILLISECONDS);

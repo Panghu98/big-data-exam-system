@@ -1,10 +1,8 @@
 package cn.edu.swpu.jdata_exam.entity;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.util.Date;
 
 /**
  * 用户分数成绩

@@ -3,18 +3,23 @@ package cn.edu.swpu.jdata_exam.utils.util;
 import ch.ethz.ssh2.Connection;
 import ch.ethz.ssh2.SCPClient;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.io.IOException;
 import java.util.Date;
 
 @Slf4j
 public class SshUtil {
-    public static String ip = "localhost";
+    @Value("${remote.ip}")
+    public static String ip;
 
-    public static String uploadPath = "/home/panghu/IdeaProjects/big-data-exam/src/main/resources/file/";
+    @Value("${file.real}")
+    private static String uploadPath;
 
-    public static String username = "panghu";
+    @Value("${remote.username}")
+    public static String username;
 
+    @Value("${remote.password}")
     public static String password  = "root";
     //实质上是file
     public static boolean putFile(String localFilePath) throws IOException {

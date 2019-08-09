@@ -39,8 +39,7 @@ public class UserAuthenticationProvider implements AuthenticationProvider {
         UserDetails userDetails = myUserInfoService.loadUserByUsername(userId);
 
         if (StringUtils.isEmpty(userDetails)){
-//            log.info("userDetails为空");
-            throw new JdataExamException(ExceptionEnum.GET_USERDETAILS_ERROR);
+            throw new JdataExamException(ExceptionEnum.GET_USERDATA_ERROR);
         }
 
         if(!password.equals(userDetails.getPassword())){
@@ -48,9 +47,6 @@ public class UserAuthenticationProvider implements AuthenticationProvider {
             throw new JdataExamException(ExceptionEnum.PASSWORD_ERROR);
         }
 
-//        //设置权限
-//        List grantedAuthorityList = new ArrayList<>();
-//        grantedAuthorityList.add(userDetails.getAuthorities());
 
 
         Authentication auth = new UsernamePasswordAuthenticationToken(userId,password);

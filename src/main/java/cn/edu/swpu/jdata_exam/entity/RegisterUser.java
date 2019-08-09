@@ -20,7 +20,10 @@ public class RegisterUser {
     private String userPassword;
 
     @NotNull
-    // 1.闵帆 2.李平 3.陈雁1  4.陈雁2
+
+    /**
+     * 1.闵帆 2.李平 3.陈雁1  4.陈雁2
+     */
     private String className;
 
     @NotNull
