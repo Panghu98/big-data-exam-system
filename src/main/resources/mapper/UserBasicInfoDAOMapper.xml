@@ -2,10 +2,10 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="cn.edu.swpu.jdata_exam.dao.UserBasicInfoDAO">
+<mapper namespace="cn.edu.swpu.exam.dao.UserBasicInfoDAO">
 
     <!--UserBasicInfo getUserById(String userId);-->
-    <select id="getUserById" resultType="cn.edu.swpu.jdata_exam.entity.UserBasicInfo">
+    <select id="getUserById" resultType="cn.edu.swpu.exam.entity.UserBasicInfo">
         SELECT
         user_id userId,
         user_password userPassword
@@ -19,7 +19,7 @@
     </select>
 
     <!--int addUser(UserBasicInfo userBasicInfo);-->
-    <insert id="addUser" parameterType="cn.edu.swpu.jdata_exam.entity.UserBasicInfo" keyProperty="userId">
+    <insert id="addUser" parameterType="cn.edu.swpu.exam.entity.UserBasicInfo" keyProperty="userId">
         INSERT INTO
         jdata_user_basic_info
         (user_id,user_password,user_class,username)
@@ -28,7 +28,7 @@
     </insert>
 
     <!--int updatePw(UserBasicInfo userBasicInfo);-->
-    <update id="updatePw" parameterType="cn.edu.swpu.jdata_exam.entity.UserBasicInfo">
+    <update id="updatePw" parameterType="cn.edu.swpu.exam.entity.UserBasicInfo">
         UPDATE
         jdata_user_basic_info
         SET

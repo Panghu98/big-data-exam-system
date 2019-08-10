@@ -17,8 +17,17 @@ spring:
         max-idle: 8
 
 mybatis:
-  type-aliases-package: cn.edu.swpu.jdata_exam.entity
+  type-aliases-package: cn.edu.swpu.exam.entity
   mapper-locations: classpath:mapper/*.xml
 server:
   port: 5488
 
+file:
+  temp: /root/home/panghu/Project/exam/temp/
+  real: /root/home/panghu/Project/exam/file/
+  evidence: /root/home/panghu/Project/exam/evidence/
+
+remote:
+  ip: localhost
+  username: root
+  password: Abc123456
