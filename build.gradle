@@ -31,7 +31,8 @@ dependencies {
     compile 'net.sourceforge.javacsv:javacsv:2.0'
     compile 'com.github.penggle:kaptcha:2.3.2'
     testCompile 'org.springframework.boot:spring-boot-starter-test:2.1.5.RELEASE'
-    implementation 'org.apache.poi:poi:4.1.0'
-    implementation 'org.lucee:poi-ooxml:3.15.0'
+    //POI 用于office文件处理
+    compile group: 'org.apache.poi', name: 'poi', version: '3.17'
+    compile group: 'org.apache.poi', name: 'poi-ooxml', version: '3.17'
     implementation 'org.apache.poi:poi-ooxml-schemas:4.1.0'
 }

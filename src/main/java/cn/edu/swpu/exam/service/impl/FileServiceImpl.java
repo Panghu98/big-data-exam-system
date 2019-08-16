@@ -19,6 +19,9 @@ import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.FillPatternType;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.util.CellRangeAddress;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -189,55 +192,42 @@ public class FileServiceImpl implements FileService {
     public ResultVo getExcel(HttpServletResponse response) {
         List<UserScore> userScoreList = userScoreDAO.selectByTime();
 
-        HSSFWorkbook wb = new HSSFWorkbook();
-        HSSFSheet sheet =wb.createSheet();
-        HSSFRow row;
-
-        row = sheet.createRow(1);
-        row.setHeight((short)(26.25*20));
-        row.createCell(0).setCellValue("学生成绩表");
-        //设置样式
-        row.getCell(0).setCellStyle(getStyle(wb,0));
-
-        for(int i = 1;i <= 3;i++){
+        // 1.创建HSSFWorkbook，一个HSSFWorkbook对应一个Excel文件
+        XSSFWorkbook wb = new XSSFWorkbook();
+        // 2.在workbook中添加一个sheet,对应Excel文件中的sheet
+        XSSFSheet sheet = wb.createSheet("sheet1");
+        // 3.设置表头，即每个列的列名
+        String[] title = {"学生ID","学生姓名","所在班级","准确率"};
+        // 3.1创建第一行
+        XSSFRow row = sheet.createRow(0);
+        // 此处创建一个序号列
+        row.createCell(0).setCellValue("序号");
+        for (int i = 0; i < title.length; i++) {
+            // 给列写入数据,创建单元格，写入数据
+            row.createCell(i+1).setCellValue(title[i]);
         }
-        CellRangeAddress rowRegion = new CellRangeAddress(0,0,0,3);
-        sheet.addMergedRegion(rowRegion);
 
-        CellRangeAddress columnRegion = new CellRangeAddress(1,4,0,0);
-        sheet.addMergedRegion(columnRegion);
-
-        row = sheet.createRow(1);
-        row.setHeight((short)(22.50*20));
-        row.createCell(1).setCellValue("学生Id");
-        row.createCell(2).setCellValue("学生姓名");
-        row.createCell(3).setCellValue("学生所在班级");
-        row.createCell(4).setCellValue("准确率");
-
-
-        for(int i = 0;i<userScoreList.size();i++){
-            row = sheet.createRow(i+2);
-            UserScore userScore = userScoreList.get(i);
-            row.createCell(1).setCellValue(userScore.getUserId());
-            row.createCell(4).setCellValue(userScore.getAccuracy());
-            String className = NameChangeUtil.getRealName(String.valueOf(userScore.getClassName()));
-            row.createCell(3).setCellValue(className);
-            row.createCell(2).setCellValue(userScore.getUsername());
-            for(int j = 1;j <= 4;j++){
-                row.getCell(j).setCellStyle(getStyle(wb,2));
-            }
+        // 写入正式数据
+        for (int i = 0; i < userScoreList.size(); i++) {
+            // 创建行
+            row = sheet.createRow(i+1);
+            // 序号
+            row.createCell(0).setCellValue(i+1);
+            // 医院名称
+            row.createCell(1).setCellValue(userScoreList.get(i).getUserId());
+            // 业务类型
+            row.createCell(2).setCellValue(userScoreList.get(i).getUsername());
+            // 异常信息
+            row.createCell(3).setCellValue(userScoreList.get(i).getClassName());
+            // 数量
+            row.createCell(4).setCellValue(userScoreList.get(i).getAccuracy());
         }
 
         //默认行高
         sheet.setDefaultRowHeight((short)(16.5*20));
-        //列宽自适应
-        for(int i=0;i<=13;i++){
-            sheet.autoSizeColumn(i);
-        }
-
 
         response.setContentType("application/vnd.ms-excel;charset=utf-8");
-        response.setHeader("Content-disposition", "attachment;filename=score.xls");
+        response.setHeader("Content-disposition", "attachment;filename=score.xlsx");
         try {
             OutputStream os = response.getOutputStream();
             wb.write(os);
@@ -254,58 +244,7 @@ public class FileServiceImpl implements FileService {
         return null;
     }
 
-    /**
-     * 获取样式
-     * @param hssfWorkbook
-     * @param styleNum
-     * @return
-     */
-    public HSSFCellStyle getStyle(HSSFWorkbook hssfWorkbook, Integer styleNum){
-        HSSFCellStyle style = hssfWorkbook.createCellStyle();
-        //右边框
-        style.setBorderRight(BorderStyle.THIN);
-        style.setBorderBottom(BorderStyle.THIN);
 
-        HSSFFont font = hssfWorkbook.createFont();
-        //设置字体为微软雅黑
-        font.setFontName("微软雅黑");
-
-        switch (styleNum){
-            case(0):{
-                //跨列居中
-                style.setAlignment(HorizontalAlignment.CENTER_SELECTION);
-                //粗体`
-                font.setBold(true);
-                //字体大小
-                font.setFontHeightInPoints((short) 14);
-                style.setFont(font);
-                style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-            }
-            break;
-            case(1):{
-                //粗体
-                font.setBold(true);
-                //字体大小
-                font.setFontHeightInPoints((short) 11);
-                style.setFont(font);
-            }
-            break;
-            case(2):{
-                font.setFontHeightInPoints((short)10);
-                style.setFont(font);
-            }
-            break;
-            case(3):{
-                style.setFont(font);
-                style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-            }
-            break;
-            default:
-                break;
-        }
-
-        return style;
-    }
 
     public boolean checkTime(){
         Calendar calendar = Calendar.getInstance();

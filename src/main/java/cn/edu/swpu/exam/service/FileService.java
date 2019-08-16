@@ -21,5 +21,10 @@ public interface FileService {
 
     public ResultVo getExcel (HttpServletResponse response);
 
+    /**
+     * 将所有的代码文件打包下载
+     * @param response
+     * @return
+     */
     public ResultVo getZipFile(HttpServletResponse response);
 }

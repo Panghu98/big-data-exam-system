@@ -53,7 +53,7 @@ public class FileController {
 
 
 
-    @RequestMapping(value ="/submit",produces = { "application/json;charset=UTF-8" })
+    @RequestMapping(value ="/submit")
     public ResultVo submitFile(HttpServletRequest request,
                                @RequestParam("file") MultipartFile file){
         return fileService.submitFile(request,file);
